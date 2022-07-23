@@ -35,6 +35,8 @@ def train(net):
   optimizer = torch.optim.Adam(net.parameters(), lr)
   loss_func = nn.BCELoss()
   l_his = []
+  best_loss_sofar = float("inf")
+
   for epoch in range(num_epoches):
     print('Epoch:', epoch + 1, 'Training...')
     running_loss = 0.0
@@ -60,10 +62,16 @@ def train(net):
       if i % 100 == 99:
         print(f'[trace] current dataset index: {i}')
         print('[%d, %5d] loss: %.3f' % (epoch + 1, i + 1, running_loss / 100))
-        running_loss = 0.0
+        #running_loss = 0.0
 
-  print(f'[trace] Finished Training, saving network to {name}')
-  torch.save(net.state_dict(), name)
+    if running_loss < best_loss_sofar:
+      best_loss_sofar = running_loss.cpu().data
+      print(f'[trace] best loss so far: {best_loss_sofar}')
+      new_name = name + '_epoch' + str(epoch) + '_loss' + str(best_loss_sofar)
+      torch.save(net.state_dict(), new_name)
+
+  #print(f'[trace] Finished Training, saving network to {name}')
+  #torch.save(net.state_dict(), name)
   fig = plt.figure()
   ax = plt.subplot(111)
   ax.plot(l_his)

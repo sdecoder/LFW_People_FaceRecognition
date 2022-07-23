@@ -171,4 +171,4 @@ transform2 = transforms.Compose([Rescale(), Flip(), Translate(), Rotate(), trans
                                  transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)), ToFloat32()])
 train_set = custom_dset('../data/lfw_funneled', '../data/lfw_funneled/train.txt', transform1, transform2)
 #train_loader = DataLoader(train_set, batch_size=N, shuffle=True, num_workers=1)
-train_loader = DataLoader(train_set, batch_size=N, shuffle=True, num_workers=10)
+train_loader = DataLoader(train_set, batch_size=N, shuffle=True, num_workers=2)
